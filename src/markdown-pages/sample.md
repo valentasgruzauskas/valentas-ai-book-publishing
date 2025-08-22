@@ -2,6 +2,7 @@
 slug: "/sample"
 date: "2024-01-01"
 title: "Sample Page"
+order: 13
 ---
 
 # Welcome to My Site

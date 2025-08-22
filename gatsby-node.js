@@ -8,8 +8,9 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   const result = await graphql(`
     {
       allMarkdownRemark(
-        sort: { frontmatter: { date: DESC } }
+        sort: { frontmatter: { order: ASC } }
         limit: 1000
+        filter: { frontmatter: { slug: { ne: null } } }
       ) {
         edges {
           node {
@@ -29,12 +30,17 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   }
 
   result.data.allMarkdownRemark.edges.forEach(({ node }) => {
-    createPage({
-      path: node.frontmatter.slug,
-      component: markdownTemplate,
-      context: {
-        id: node.id,
-      },
-    })
+    const slug = node.frontmatter.slug
+    if (slug) {
+      createPage({
+        path: slug,
+        component: markdownTemplate,
+        context: {
+          id: node.id,
+        },
+      })
+    } else {
+      reporter.warn(`No slug found for node ${node.id}`)
+    }
   })
 }
