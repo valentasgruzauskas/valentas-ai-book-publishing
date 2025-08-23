@@ -9,6 +9,9 @@ module.exports = {
   },
   pathPrefix: `/valentas-ai-book-publishing`,
   plugins: [
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -16,6 +19,21 @@ module.exports = {
         path: `${__dirname}/src/markdown-pages`,
       },
     },
-    `gatsby-transformer-remark`,
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 800,
+              quality: 90,
+              withWebp: true,
+              loading: "lazy",
+            },
+          },
+        ],
+      },
+    },
   ],
-}
+};
